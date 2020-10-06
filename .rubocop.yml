@@ -8,3 +8,9 @@ Style/StringLiteralsInInterpolation:
 
 Layout/LineLength:
   Max: 120
+
+Metrics/BlockLength:
+  ExcludedMethods: ['describe', 'context']
+
+Naming:
+  Enabled: False
