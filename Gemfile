@@ -11,6 +11,4 @@ gem "rspec", "~> 3.0"
 
 gem "rubocop", "~> 0.80"
 
-group :test do
-  gem "pry"
-end
+gem "pry"

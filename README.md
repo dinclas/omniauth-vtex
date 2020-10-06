@@ -1,28 +1,22 @@
 # Omniauth::Vtex::Oauth
 
-Welcome to your new gem! In this directory, you'll find the files you need to be able to package up your Ruby library into a gem. Put your Ruby code in the file `lib/omniauth/vtex/oauth`. To experiment with that code, run `bin/console` for an interactive prompt.
-
-TODO: Delete this and the text above, and describe your gem
+OmniAuth strategy for VTEX OAuth2
 
 ## Installation
 
 Add this line to your application's Gemfile:
 
 ```ruby
-gem 'omniauth-vtex-oauth'
+gem 'omniauth-vtex-oauth', git: 'https://github.com/vtex/omniauth-vtex-oauth'
 ```
 
 And then execute:
 
     $ bundle install
 
-Or install it yourself as:
-
-    $ gem install omniauth-vtex-oauth
-
 ## Usage
 
-TODO: Write usage instructions here
+Check https://github.com/omniauth/omniauth.
 
 ## Development
 
