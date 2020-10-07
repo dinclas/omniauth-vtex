@@ -34,9 +34,8 @@ module OmniAuth
       end      
 
       def raw_info
-        obj = JSON.parse(access_token.token)
         #TODO: Add token validation(requires VTEX signing key)
-        payload = JWT.decode(obj['access_token'], false, nil).first
+        payload = JWT.decode(access_token.token, false, nil).first
       end
     end
   end
