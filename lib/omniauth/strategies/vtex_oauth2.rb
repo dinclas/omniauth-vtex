@@ -11,7 +11,7 @@ module OmniAuth
       option :account
       option :client_options, authorize_url: "/_v/oauth2/auth",
                               token_url: "/_v/oauth2/token"
-      options :auth_token_params, parse: (proc do |body, _response|
+      option :auth_token_params, parse: (proc do |body, _response|
                                             binding.pry
                                             obj = JSON.parse(body)
 
