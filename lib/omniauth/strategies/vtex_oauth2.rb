@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require "omniauth-oauth2"
+require "json"
 
 module OmniAuth
   module Strategies
@@ -9,7 +10,19 @@ module OmniAuth
       option :name, "vtex_oauth2"
       option :account
       option :client_options, authorization_url: "/_v/oauth2/auth",
-                              token_url: "/_v/oauth2/token"
+                              token_url: "/_v/oauth2/token",
+                              parse: (proc do |body, _response|
+                                binding.pry
+                                obj = JSON.parse(body)
+
+                                #TODO: Add token validation(requires VTEX signing key)
+                                payload = JWT.decode(obj['access_token'], false, nil).first
+
+                                payload.merge({
+                                  access_token: obj['access_token'],
+                                  expires_at: payload['expt']
+                                })
+                              end)
 
       option :setup, (lambda do |env|
         strategy = env["omniauth.strategy"]
