@@ -9,7 +9,7 @@ module OmniAuth
     class VtexOauth2 < OmniAuth::Strategies::OAuth2
       option :name, "vtex_oauth2"
       option :account
-      option :client_options, authorization_url: "/_v/oauth2/auth",
+      option :client_options, authorize_url: "/_v/oauth2/auth",
                               token_url: "/_v/oauth2/token",
                               parse: (proc do |body, _response|
                                 binding.pry
@@ -39,6 +39,10 @@ module OmniAuth
           email: access_token["email"]
         }
       end
+
+      def callback_url
+        full_host + script_name + callback_path
+      end      
     end
   end
 end
