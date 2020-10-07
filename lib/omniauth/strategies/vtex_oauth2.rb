@@ -2,6 +2,7 @@
 
 require "omniauth-oauth2"
 require "json"
+require "base64"
 
 module OmniAuth
   module Strategies
@@ -11,18 +12,6 @@ module OmniAuth
       option :account
       option :client_options, authorize_url: "/_v/oauth2/auth",
                               token_url: "/_v/oauth2/token"
-      option :auth_token_params, parse: (proc do |body, _response|
-                                            binding.pry
-                                            obj = JSON.parse(body)
-
-                                            #TODO: Add token validation(requires VTEX signing key)
-                                            payload = JWT.decode(obj['access_token'], false, nil).first
-
-                                            payload.merge({
-                                              access_token: obj['access_token'],
-                                              expires_at: payload['expt']
-                                            })
-                                          end)
 
       option :setup, (lambda do |env|
         strategy = env["omniauth.strategy"]
@@ -31,18 +20,24 @@ module OmniAuth
         env["omniauth.strategy"].options[:client_options]["site"] = "https://#{account}.myvtex.com"
       end)
 
-      uid { access_token["user_id"] }
+      uid { raw_info["user_id"] }
 
       info do
         {
-          name: access_token["unique_name"],
-          email: access_token["email"]
+          name: raw_info["unique_name"],
+          email: raw_info["email"]
         }
       end
 
       def callback_url
         full_host + script_name + callback_path
       end      
+
+      def raw_info
+        obj = JSON.parse(decoded)
+        #TODO: Add token validation(requires VTEX signing key)
+        payload = JWT.decode(obj['access_token'], false, nil).first
+      end
     end
   end
 end
