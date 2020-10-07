@@ -10,19 +10,19 @@ module OmniAuth
       option :name, "vtex_oauth2"
       option :account
       option :client_options, authorize_url: "/_v/oauth2/auth",
-                              token_url: "/_v/oauth2/token",
-                              parse: (proc do |body, _response|
-                                binding.pry
-                                obj = JSON.parse(body)
+                              token_url: "/_v/oauth2/token"
+      options :auth_token_params, parse: (proc do |body, _response|
+                                            binding.pry
+                                            obj = JSON.parse(body)
 
-                                #TODO: Add token validation(requires VTEX signing key)
-                                payload = JWT.decode(obj['access_token'], false, nil).first
+                                            #TODO: Add token validation(requires VTEX signing key)
+                                            payload = JWT.decode(obj['access_token'], false, nil).first
 
-                                payload.merge({
-                                  access_token: obj['access_token'],
-                                  expires_at: payload['expt']
-                                })
-                              end)
+                                            payload.merge({
+                                              access_token: obj['access_token'],
+                                              expires_at: payload['expt']
+                                            })
+                                          end)
 
       option :setup, (lambda do |env|
         strategy = env["omniauth.strategy"]
